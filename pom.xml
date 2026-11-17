@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>backenBD</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
+	<name>backendBD</name>
 	<description/>
 	<url/>
 	<licenses>
