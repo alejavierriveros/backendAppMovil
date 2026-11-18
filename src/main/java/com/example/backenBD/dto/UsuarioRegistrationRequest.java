@@ -3,6 +3,11 @@ package com.example.backenBD.dto;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+/**
+ * DTO DE REGISTRO DE USUARIO (POST /api/usuarios).
+ * Valida automaticamente los campos recibidos desde el formulario de registro en Android
+ * antes de entrar al servicio. Si algo falla, devuelve HTTP 400 Bad Request.
+ */
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class UsuarioRegistrationRequest {
@@ -23,6 +28,7 @@ public class UsuarioRegistrationRequest {
     private String contrasena;
 
     @NotBlank(message = "El rol es obligatorio (DOCENTE o ESTUDIANTE)")
+    @Pattern(regexp = "^(?i)(DOCENTE|ESTUDIANTE)$", message = "El rol solo puede ser DOCENTE o ESTUDIANTE")
     private String rol;
 
     private String cursoAsignado;

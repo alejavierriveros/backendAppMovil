@@ -2,9 +2,14 @@ package com.example.backenBD.util;
 
 import java.util.Set;
 
+/**
+ * UTILIDAD DE NORMALIZACION Y VALIDACION DE RUT CHILENO.
+ * Garantiza que todos los RUTs se guarden en un formato unico ("11111111-1")
+ * y valida el digito verificador mediante el algoritmo oficial Modulo 11.
+ */
 public class RutUtils {
 
-    // Lista blanca exacta con los 10 RUTs de prueba (normalizados sin puntos)
+    // Lista blanca con los 10 RUTs de prueba del sistema para que no sean bloqueados en la evaluacion
     private static final Set<String> RUTS_DE_PRUEBA = Set.of(
             "11111111-1", // María González (Docente)
             "22222222-2", // Carlos Soto (Docente)
@@ -19,7 +24,7 @@ public class RutUtils {
     );
 
     /**
-     * Normaliza un RUT dejándolo sin puntos, con guion y DV en mayúscula.
+     * Elimina puntos y espacios, deja el guion y convierte la 'k' a mayuscula.
      * Ejemplo: "11.111.111-1" -> "11111111-1"
      */
     public static String normalizar(String rut) {
@@ -34,8 +39,7 @@ public class RutUtils {
     }
 
     /**
-     * Valida un RUT chileno mediante el algoritmo Módulo 11,
-     * permitiendo además los 10 RUTs de prueba del sistema.
+     * Valida si el RUT pertenece a los usuarios de prueba o cumple con el algoritmo Modulo 11.
      */
     public static boolean esValido(String rut) {
         String normalizado = normalizar(rut);
@@ -48,11 +52,12 @@ public class RutUtils {
             return true;
         }
 
-        // 2. Validar formato y algoritmo Módulo 11 para cualquier otro RUT nuevo
+        // 2. Validar formato numerico (7 u 8 digitos + guion + digito o K)
         if (!normalizado.matches("^[0-9]{7,8}-[0-9K]$")) {
             return false;
         }
 
+        // 3. Calculo matematico del digito verificador (Modulo 11)
         String[] partes = normalizado.split("-");
         int numero = Integer.parseInt(partes[0]);
         char dvIngresado = partes[1].charAt(0);
